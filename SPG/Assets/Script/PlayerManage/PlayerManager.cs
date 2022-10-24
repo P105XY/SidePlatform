@@ -11,6 +11,11 @@ public class PlayerFSMManager : MonoBehaviour
 {
     private FSMState<PlayerFSMManager> mFSMState;
     private FSMStateMachine<PlayerFSMManager> mFSMMachine;
+
+    private void Awake()
+    {
+        
+    }
 }
 
 
