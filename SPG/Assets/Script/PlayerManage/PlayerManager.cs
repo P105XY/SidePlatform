@@ -2,30 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ePlayerState
-{
-    Idle, Move,Jump,Shoot,Grapple, Dead
-}
-
-public class PlayerFSMManager : MonoBehaviour
-{
-    private FSMState<PlayerFSMManager> mFSMState;
-    private FSMStateMachine<PlayerFSMManager> mFSMMachine;
-
-    private void Awake()
-    {
-        
-    }
-}
-
-
 public class PlayerManager : Singleton<PlayerManager>
 {
     public PlayerInput PlayerInput { get; private set; }
     public PlayerStatus PlayerStatus { get; private set; }
-    public GameObject PlayerObject { get; private set; }
     public PlayerAction PlayerAction { get; private set; }
     public PlayerMovement PlayerMovement { get; private set; }
+    public GameObject PlayerObject { get; private set; }
 
 
     private void Awake()
@@ -35,11 +18,18 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void Initialize()
     {
-        PlayerInput = new PlayerInput();
-        PlayerStatus = new PlayerStatus();
+        PlayerObjectInit();
+
+        PlayerInput = GetComponent<PlayerInput>();
+        PlayerStatus = GetComponent<PlayerStatus>();
 
         PlayerInput.Initialize();
         PlayerStatus.Initialize();
+    }
+
+    public void PlayerObjectInit()
+    {
+        PlayerObject = GameObject.FindGameObjectWithTag(GlobalString.GlobalPlayer);
         PlayerAction = PlayerObject.GetComponent<PlayerAction>();
         PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
     }

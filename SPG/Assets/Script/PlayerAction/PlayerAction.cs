@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject Hook;
+    private GameObject currentHook;
+
+    private void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GrappleAction()
     {
-        
+        Vector2 dest = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        currentHook = Instantiate(Hook, transform.position, Quaternion.identity);
+        currentHook.GetComponent<GrappleAction>().SetDestination(dest);
     }
+
+    public void StopGrappleAction()
+    {
+
+    }
+
+    public void ShootingGun()
+    {
+
+    }
+    public void StopShootingGun()
+    {
+
+    }
+
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T minstance;
-    private static object mLock = new object();
-    private static bool mIsLockObject = false;
+    private static T        minstance;
+    private static object   mLock = new object();
+    private static bool     mIsLockObject = false;
 
     public static T GetInstance
     {
