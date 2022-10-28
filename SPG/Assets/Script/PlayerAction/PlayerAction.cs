@@ -14,7 +14,8 @@ public class PlayerAction : MonoBehaviour
 
     public void GrappleAction()
     {
-        Vector2 dest = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        Vector2 dest = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log(dest);
         currentHook = Instantiate(Hook, transform.position, Quaternion.identity);
         currentHook.GetComponent<GrappleAction>().SetDestination(dest);
     }

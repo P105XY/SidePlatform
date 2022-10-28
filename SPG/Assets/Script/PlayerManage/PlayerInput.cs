@@ -14,6 +14,8 @@ public class PlayerInput : MonoBehaviour
     private Action mPlayerStopShooting;
     private Action mPlayerGrapple;
     private Action mPlayerStopGrapple;
+    private Action<float> mPlayerMovement;
+    private Action mPlayerStopMovement;
 
     public bool mIsActiveInput { get; private set; }
 
@@ -24,6 +26,8 @@ public class PlayerInput : MonoBehaviour
 
         mPlayerJump += PlayerManager.GetInstance.PlayerMovement.JumpAction;
         mPlayerStopJump += PlayerManager.GetInstance.PlayerMovement.StopJumpAction;
+        mPlayerMovement += PlayerManager.GetInstance.PlayerMovement.Movement;
+        mPlayerStopMovement += PlayerManager.GetInstance.PlayerMovement.StopMovement;
         mPlayerShooting += PlayerManager.GetInstance.PlayerAction.ShootingGun;
         mPlayerStopShooting += PlayerManager.GetInstance.PlayerAction.StopShootingGun;
         mPlayerGrapple += PlayerManager.GetInstance.PlayerAction.GrappleAction;
@@ -37,7 +41,7 @@ public class PlayerInput : MonoBehaviour
         {
             { KeyCode.Space, Jump},
             { KeyCode.Mouse0, Shoot},
-            { KeyCode.Mouse1,  Grapple}
+            { KeyCode.Mouse1,  Grapple},
         };
     }
 
@@ -47,7 +51,9 @@ public class PlayerInput : MonoBehaviour
         {
             { KeyCode.Space, StopJump},
             { KeyCode.Mouse0, StopShoot},
-            { KeyCode.Mouse1,  StopGrapple}
+            { KeyCode.Mouse1,  StopGrapple},
+            { KeyCode.A, PlayerStopMove },
+            { KeyCode.D, PlayerStopMove }
         };
     }
 
@@ -62,8 +68,11 @@ public class PlayerInput : MonoBehaviour
         foreach (var key in mKeyRelease)
             if (Input.GetKeyUp(key.Key))
                 key.Value();
+    }
 
-
+    private void FixedUpdate()
+    {
+        mPlayerMovement(Input.GetAxisRaw("Horizontal"));
     }
 
     //one line funcs
@@ -73,5 +82,6 @@ public class PlayerInput : MonoBehaviour
     private void StopShoot() => mPlayerStopShooting();
     private void Grapple() => mPlayerGrapple();
     private void StopGrapple() => mPlayerStopGrapple();
+    private void PlayerStopMove() => mPlayerStopMovement();
     public void SetActive(bool isTrueFalse) => this.mIsActiveInput = isTrueFalse;
 }
