@@ -6,7 +6,7 @@ public class GrappleAction : MonoBehaviour
 {
     private Vector3 mDestination;
     private float mMovementSpeed;
-    private float mDistance = 5.0f;
+    private float mDistance = 1.0f;
 
     private GameObject mPlayerObject;
     private GameObject mLastNode;
@@ -28,22 +28,29 @@ public class GrappleAction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, mDestination, mMovementSpeed);
-
-        if (transform.position != mDestination)
-        {
-            if (Vector2.Distance(mPlayerObject.transform.position, mLastNode.transform.position) > mDistance)
-            {
-                Debug.Log(Vector2.Distance(mPlayerObject.transform.position, transform.position));
-                Debug.Log("Create Node");
-                CreateNode();
-            }
-        }
-        else if (mIsDone == false)
+        if (Vector2.Distance(transform.position, mDestination) <= Mathf.Epsilon && !mIsDone)
         {
             mIsDone = true;
-            mLastNode.GetComponent<HingeJoint2D>().connectedBody = mPlayerObject.GetComponent<Rigidbody2D>();
+            mLastNode.GetComponent<DistanceJoint2D>().connectedBody = mPlayerObject.GetComponent<Rigidbody2D>();
         }
+        else
+        {
+            transform.position = Vector2.MoveTowards(transform.position, mDestination, mMovementSpeed);
+        }
+
+        //transform.position = Vector2.MoveTowards(transform.position, mDestination, mMovementSpeed);
+        //if (transform.position != mDestination)
+        //{
+        //    if (Vector2.Distance(mPlayerObject.transform.position, mLastNode.transform.position) > mDistance)
+        //    {
+        //        CreateNode();
+        //    }
+        //}
+        //else if (mIsDone == false)
+        //{
+        //    mIsDone = true;
+        //    mLastNode.GetComponent<HingeJoint2D>().connectedBody = mPlayerObject.GetComponent<Rigidbody2D>();
+        //}
 
     }
 

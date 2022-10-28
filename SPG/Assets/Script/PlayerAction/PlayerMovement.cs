@@ -32,9 +32,11 @@ public class PlayerMovement : MonoBehaviour
     [field: SerializeField]
     private float mVelocityPower;
 
+    private PlayerAction mPlayerAction;
     private void Start()
     {
         mCurrentRigid = GetComponent<Rigidbody2D>();
+        mPlayerAction = GetComponent<PlayerAction>();
     }
 
     private void FixedUpdate()
@@ -82,7 +84,6 @@ public class PlayerMovement : MonoBehaviour
     }
     public void StopMovement()
     {
-        Debug.Log(mLastLand);
         if (mLastLand > 0.0f)
         {
             float amount = Mathf.Min(Mathf.Abs(mCurrentRigid.velocity.x), Mathf.Abs(mCurrentRigid.sharedMaterial.friction));
@@ -93,7 +94,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void JumpAction()
     {
-        Debug.Log("Jumpo");
+        if (TryGetComponent<PlayerAction>(out var ac) && ac.IsGrappling)
+        {
+            ac.StopGrappleAction();
+        }
 
         mLastJump = 0.1f;
     }
@@ -111,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
     private void MaxJumpHeightAction()
     {
         mLastJump = 0.0f;
-        mCurrentRigid.AddForce(Vector2.down * mMaxJumpDownForce , ForceMode2D.Impulse);
+        mCurrentRigid.AddForce(Vector2.down * mMaxJumpDownForce, ForceMode2D.Impulse);
     }
 
 

@@ -51,7 +51,6 @@ public class PlayerInput : MonoBehaviour
         {
             { KeyCode.Space, StopJump},
             { KeyCode.Mouse0, StopShoot},
-            { KeyCode.Mouse1,  StopGrapple},
             { KeyCode.A, PlayerStopMove },
             { KeyCode.D, PlayerStopMove }
         };
