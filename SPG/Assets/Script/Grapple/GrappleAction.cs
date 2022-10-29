@@ -1,33 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GrappleAction : MonoBehaviour
 {
-    private Vector3 mDestination;
-    private float mMovementSpeed;
-    private float mDistance = 1.0f;
+    private Vector3         mDestination;
+    private float           mMovementSpeed;
+    private float           mDistance = 1.0f;
 
-    private GameObject mPlayerObject;
-    private GameObject mLastNode;
+    private GameObject      mPlayerObject;
+    private GameObject      mLastNode;
 
-    private bool mIsDone = false;
+    private bool            mIsDone = false;
 
     [field: SerializeField]
-    private GameObject mNodePrefab;
+    private GameObject      mNodePrefab;
+    [field: SerializeField]
+    private AnimationCurve  mLineAnimCurve;
+
+    private LineRenderer    mLineRenderer;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        mMovementSpeed = 0.25f;
-        mPlayerObject = PlayerManager.GetInstance.PlayerObject;
-        mLastNode = transform.gameObject;
+        mMovementSpeed  = 2.0f;
+        mPlayerObject   = PlayerManager.GetInstance.PlayerObject;
+        mLastNode       = transform.gameObject;
+        mLineAnimCurve  = new AnimationCurve();
+        mLineRenderer   = GetComponent<LineRenderer>();
+
+        mLineRenderer.positionCount = 2;
+        mLineRenderer.startWidth = mLineRenderer.endWidth = 0.08f;
+        mLineRenderer.SetPosition(0, transform.position);
+        mLineRenderer.SetPosition(1, PlayerManager.GetInstance.PlayerObject.transform.position);
+        mLineRenderer.useWorldSpace = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        mLineRenderer.SetPosition(0, transform.position);
+        mLineRenderer.SetPosition(1, PlayerManager.GetInstance.PlayerObject.transform.position);
+
         if (Vector2.Distance(transform.position, mDestination) <= Mathf.Epsilon && !mIsDone)
         {
             mIsDone = true;
@@ -54,14 +70,8 @@ public class GrappleAction : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
-    {
-
-    }
-
     public void CreateNode()
     {
-
         Vector2 CreateNodePos = mPlayerObject.transform.position - mLastNode.transform.position;
         CreateNodePos.Normalize();
         CreateNodePos *= mDistance;

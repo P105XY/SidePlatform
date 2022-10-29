@@ -1,36 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private bool mIsActive;
-    private bool mIsJumpMaxHeight;
-    private float mLastLand;
-    private float mLastJump;
+    private bool        mIsActive;
+    private bool        mIsJumpMaxHeight;
+    private float       mLastLand;
+    private float       mLastJump;
     private Rigidbody2D mCurrentRigid;
 
-
     [field: HideInInspector]
-    public bool isJumping;
+    public bool         isJumping;
     [field: HideInInspector]
-    public float MoveDirection;
+    public float        MoveDirection;
 
     [field: SerializeField]
-    private float mMovementSpeepd;
+    private float       mMovementSpeepd;
     [field: SerializeField]
-    private float mJumpPower;
+    private float       mJumpPower;
     [field: SerializeField]
-    private float mStopJumpDownForce;
+    private float       mStopJumpDownForce;
     [field: SerializeField]
-    private float mMaxJumpDownForce;
+    private float       mMaxJumpDownForce;
     [field: SerializeField]
-    private float mAccelerationRate;
+    private float       mAccelerationRate;
     [field: SerializeField]
-    private float mDeccelerationRate;
+    private float       mDeccelerationRate;
     [field: SerializeField]
-    private float mVelocityPower;
+    private float       mVelocityPower;
+    [field: SerializeField]
+    private float       mSwingPower;
+
+    private float       mLeftSin;
+    private float       mLeftCos;
+    private float       mRightSin;
+    private float       mRightCos;
 
     private PlayerAction mPlayerAction;
     private void Start()
@@ -74,14 +81,32 @@ public class PlayerMovement : MonoBehaviour
     {
         if (direction != 0.0f) MoveDirection = direction;
 
-        float targetSpeed = mMovementSpeepd * direction;
-        float speedDiffrence = targetSpeed - mCurrentRigid.velocity.x;
-        float acceleration = (Mathf.Abs(targetSpeed) > 0.01f) ? mAccelerationRate : mDeccelerationRate;
-        float movement = Mathf.Pow(Mathf.Abs(speedDiffrence) * acceleration, mVelocityPower) * Mathf.Sign(speedDiffrence);
+        if (!mPlayerAction.IsGrappling)
+        {
+            float targetSpeed = mMovementSpeepd * direction;
+            float speedDiffrence = targetSpeed - mCurrentRigid.velocity.x;
+            float acceleration = (Mathf.Abs(targetSpeed) > 0.01f) ? mAccelerationRate : mDeccelerationRate;
+            float movement = Mathf.Pow(Mathf.Abs(speedDiffrence) * acceleration, mVelocityPower) * Mathf.Sign(speedDiffrence);
 
-        mCurrentRigid.AddForce(movement * Vector2.right);
+            mCurrentRigid.AddForce(movement * Vector2.right);
+        }
+        else
+        {
+            mCurrentRigid.AddForce(direction * mSwingPower * Time.deltaTime * Vector2.right, 0);
+        }
 
     }
+
+    private float GetBothVectorTheta(Vector2 standard, Vector2 target)
+    {
+        return Quaternion.FromToRotation(Vector2.right, target - standard).eulerAngles.z;
+
+        //float standardAbs = Mathf.Sqrt(Mathf.Pow(standard.x, 2) + Mathf.Pow(standard.y, 2));
+        //float targetAbs = Mathf.Sqrt(Mathf.Pow(target.x, 2) + Mathf.Pow(target.y, 2));
+
+        //return Mathf.Acos(Vector2.Dot(standard, target) / Mathf.Abs(standardAbs * targetAbs)) * Mathf.Rad2Deg;
+    }
+
     public void StopMovement()
     {
         if (mLastLand > 0.0f)

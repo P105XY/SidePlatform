@@ -8,14 +8,16 @@ public class PlayerInput : MonoBehaviour
     private Dictionary<KeyCode, Action> mKeyInput;
     private Dictionary<KeyCode, Action> mKeyRelease;
 
-    private Action mPlayerJump;
-    private Action mPlayerStopJump;
-    private Action mPlayerShooting;
-    private Action mPlayerStopShooting;
-    private Action mPlayerGrapple;
-    private Action mPlayerStopGrapple;
+    private Action        mPlayerJump;
+    private Action        mPlayerStopJump;
+    private Action        mPlayerShooting;
+    private Action        mPlayerStopShooting;
+    private Action        mPlayerGrapple;
+    private Action        mPlayerStopGrapple;
     private Action<float> mPlayerMovement;
-    private Action mPlayerStopMovement;
+    private Action        mPlayerStopMovement;
+    private Action        mSwapPrevWeapon;
+    private Action        mSwapNextWeapon;
 
     public bool mIsActiveInput { get; private set; }
 
@@ -24,24 +26,28 @@ public class PlayerInput : MonoBehaviour
         SetKeyInput();
         SetKeyRelease();
 
-        mPlayerJump += PlayerManager.GetInstance.PlayerMovement.JumpAction;
-        mPlayerStopJump += PlayerManager.GetInstance.PlayerMovement.StopJumpAction;
-        mPlayerMovement += PlayerManager.GetInstance.PlayerMovement.Movement;
+        mPlayerJump         += PlayerManager.GetInstance.PlayerMovement.JumpAction;
+        mPlayerStopJump     += PlayerManager.GetInstance.PlayerMovement.StopJumpAction;
+        mPlayerMovement     += PlayerManager.GetInstance.PlayerMovement.Movement;
         mPlayerStopMovement += PlayerManager.GetInstance.PlayerMovement.StopMovement;
-        mPlayerShooting += PlayerManager.GetInstance.PlayerAction.ShootingGun;
+        mPlayerShooting     += PlayerManager.GetInstance.PlayerAction.ShootingGun;
         mPlayerStopShooting += PlayerManager.GetInstance.PlayerAction.StopShootingGun;
-        mPlayerGrapple += PlayerManager.GetInstance.PlayerAction.GrappleAction;
-        mPlayerStopGrapple += PlayerManager.GetInstance.PlayerAction.StopGrappleAction;
-        mIsActiveInput = true;
+        mPlayerGrapple      += PlayerManager.GetInstance.PlayerAction.GrappleAction;
+        mPlayerStopGrapple  += PlayerManager.GetInstance.PlayerAction.StopGrappleAction;
+        mSwapNextWeapon     += PlayerManager.GetInstance.PlayerAction.SwapNextWeapon;
+        mSwapPrevWeapon     += PlayerManager.GetInstance.PlayerAction.SwapPrevWeapon;
+        mIsActiveInput      = true;
     }
 
     private void SetKeyInput()
     {
         mKeyInput = new Dictionary<KeyCode, Action>
         {
-            { KeyCode.Space, Jump},
-            { KeyCode.Mouse0, Shoot},
-            { KeyCode.Mouse1,  Grapple},
+            { KeyCode.Space,    Jump },
+            { KeyCode.Mouse0,   Shoot },
+            { KeyCode.Mouse1,   Grapple },
+            { KeyCode.Q,        SwapPrevWeapon },
+            { KeyCode.E,        SwapNextWeapon }
         };
     }
 
@@ -49,10 +55,10 @@ public class PlayerInput : MonoBehaviour
     {
         mKeyRelease = new Dictionary<KeyCode, Action>
         {
-            { KeyCode.Space, StopJump},
-            { KeyCode.Mouse0, StopShoot},
-            { KeyCode.A, PlayerStopMove },
-            { KeyCode.D, PlayerStopMove }
+            { KeyCode.Space,    StopJump },
+            { KeyCode.Mouse0,   StopShoot },
+            { KeyCode.A,        PlayerStopMove },
+            { KeyCode.D,        PlayerStopMove }
         };
     }
 
@@ -75,12 +81,14 @@ public class PlayerInput : MonoBehaviour
     }
 
     //one line funcs
-    private void Jump() => mPlayerJump();
-    private void StopJump() => mPlayerStopJump();
-    private void Shoot() => mPlayerShooting();
-    private void StopShoot() => mPlayerStopShooting();
-    private void Grapple() => mPlayerGrapple();
-    private void StopGrapple() => mPlayerStopGrapple();
-    private void PlayerStopMove() => mPlayerStopMovement();
+    private void Jump()                     => mPlayerJump();
+    private void StopJump()                 => mPlayerStopJump();
+    private void Shoot()                    => mPlayerShooting();
+    private void StopShoot()                => mPlayerStopShooting();
+    private void Grapple()                  => mPlayerGrapple();
+    private void StopGrapple()              => mPlayerStopGrapple();
+    private void PlayerStopMove()           => mPlayerStopMovement();
+    private void SwapPrevWeapon()           => mSwapPrevWeapon();
+    private void SwapNextWeapon()           => mSwapNextWeapon();
     public void SetActive(bool isTrueFalse) => this.mIsActiveInput = isTrueFalse;
 }
