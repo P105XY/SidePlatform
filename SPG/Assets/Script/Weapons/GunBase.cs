@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class GunBase : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    protected string mWeaponName;
+    protected float mWeaponRange;
+    protected float mWeaponDamage;
+    protected float mWeaponRate;
+
+
+    public void InitializeGun(string name,float range, float damage, float rate)
     {
-        
+        mWeaponName = name;
+        mWeaponRange = range;
+        mWeaponDamage = damage;
+        mWeaponRate = rate;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShootWeapon()
     {
-        
+
     }
+
 }

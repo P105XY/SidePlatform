@@ -1,0 +1,6 @@
+Name,Range,Damage,Rate
+Revolver,100,10,1.5
+ShotGun,20,5,2
+SMG,50,3,0.3
+Rifle,200,25,2.8
+AutoRIfle,80,8,0.75

@@ -10,17 +10,17 @@ public class GameManager : Singleton<GameManager>
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnSceneLoaded(Scene currentScene, LoadSceneMode loadedScene)
     {
-        PlayerManager.GetInstance.PlayerObjectInit();
+        //PlayerManager.GetInstance.PlayerObjectInit();
     }
 }
