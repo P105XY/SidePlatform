@@ -1,3 +1,4 @@
+using Assets.Script.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,10 +24,15 @@ public class GunManager : MonoBehaviour
             mGunBase.Add(Instantiate(gb.gameObject));
             if (TryGetComponent<GunBase>(out var thisGB)) thisGB.InitializeGun(n, range, damage, rate);
 
-            mGunBase[i].SetActive(false);
+            //mGunBase[i].SetActive(false);
             mGunBase[i].transform.SetParent(PlayerManager.GetInstance.PlayerObject.transform);
         }
 
+    }
+
+    public List<GameObject> GetGunList()
+    {
+        return this.mGunBase;
     }
 
     private float ParseFloat(object obj)

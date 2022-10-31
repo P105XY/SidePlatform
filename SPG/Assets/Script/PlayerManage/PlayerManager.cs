@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -27,6 +29,11 @@ public class PlayerManager : Singleton<PlayerManager>
         PlayerInput.Initialize();
         PlayerStatus.Initialize();
         GunManager.InitializeGun();
+    }
+
+    public List<GameObject> GetGunList()
+    {
+        return GunManager.GetGunList();
     }
 
     public void PlayerObjectInit()

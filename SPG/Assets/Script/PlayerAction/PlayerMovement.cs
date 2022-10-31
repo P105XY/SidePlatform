@@ -119,9 +119,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void JumpAction()
     {
-        if (TryGetComponent<PlayerAction>(out var ac) && ac.IsGrappling)
+        if (mPlayerAction.IsGrappling)
         {
-            ac.StopGrappleAction();
+
+            mPlayerAction.StopGrappleAction();
         }
 
         mLastJump = 0.1f;
