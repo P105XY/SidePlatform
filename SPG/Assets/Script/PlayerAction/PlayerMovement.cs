@@ -70,7 +70,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (mCurrentRigid.velocity.y <= Mathf.Epsilon && mIsJumpMaxHeight && isJumping)
         {
-            Debug.Log("Down Force");
             MaxJumpHeightAction();
             mIsJumpMaxHeight = false;
         }

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Rifle : GunBase
 {
+    public override void Shooting(Vector2 dir)
+    {
+        Debug.Log("SHOOTING" + gameObject.name);
+    }
+
     // Start is called before the first frame update
     void Start()
     {

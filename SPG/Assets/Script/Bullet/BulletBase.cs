@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletBase : MonoBehaviour
+public interface IHit
 {
-    // Start is called before the first frame update
-    void Start()
+    void HitEnemy();
+    void HitObject();
+}
+
+public class BulletBase : MonoBehaviour, IHit
+{
+    void IHit.HitEnemy()
     {
-        
+        throw new System.NotImplementedException();
     }
 
-    // Update is called once per frame
-    void Update()
+    void IHit.HitObject()
     {
-        
+        throw new System.NotImplementedException();
     }
+
 }

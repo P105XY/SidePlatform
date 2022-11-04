@@ -22,9 +22,9 @@ public class GunManager : MonoBehaviour
             GunBase gb = Resources.Load<GunBase>("Guns/" + n);
 
             mGunBase.Add(Instantiate(gb.gameObject));
-            if (TryGetComponent<GunBase>(out var thisGB)) thisGB.InitializeGun(n, range, damage, rate);
+            if (mGunBase[i].TryGetComponent<GunBase>(out var thisGB)) thisGB.InitializeGun(n, range, damage, rate);
 
-            //mGunBase[i].SetActive(false);
+            mGunBase[i].SetActive(false);
             mGunBase[i].transform.SetParent(PlayerManager.GetInstance.PlayerObject.transform);
         }
 

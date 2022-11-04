@@ -2,25 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunBase : MonoBehaviour
+public interface IShootGun
 {
-    protected string mWeaponName;
-    protected float mWeaponRange;
-    protected float mWeaponDamage;
-    protected float mWeaponRate;
+    void Shooting(Vector2 dir);
+}
+public abstract class GunBase : MonoBehaviour, IShootGun
+{
+    public string mWeaponName;
+    public float mWeaponRange;
+    public float mWeaponDamage;
+    public float mWeaponRate;
 
 
-    public void InitializeGun(string name,float range, float damage, float rate)
+    public void InitializeGun(string name, float range, float damage, float rate)
     {
+        Debug.Log("Init GUN");
         mWeaponName = name;
         mWeaponRange = range;
         mWeaponDamage = damage;
         mWeaponRate = rate;
     }
 
-    public void ShootWeapon()
-    {
+    public string GetName() { return mWeaponName; }
+    public float GetDamage() { return mWeaponDamage; }
+    public float GetRange() { return mWeaponRange; }
+    public float GetRate() { return mWeaponRate; }
 
-    }
+    public abstract void Shooting(Vector2 dir);
 
 }

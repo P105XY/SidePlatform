@@ -10,4 +10,5 @@ public class GlobalString
     public readonly static string GlobalPlatform = "Platform";
     public readonly static string GlobalEnemy = "Enemy";
     public readonly static string GlobalWall = "Wall";
+    public readonly static string GlobalCeling = "Celing";
 }
