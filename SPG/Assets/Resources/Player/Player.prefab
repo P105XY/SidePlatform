@@ -131,14 +131,14 @@ MonoBehaviour:
   isJumping: 0
   MoveDirection: 0
   mMovementSpeepd: 20
-  mJumpPower: 70
+  mJumpPower: 50
   mStopJumpDownForce: 1
   mMaxJumpDownForce: 5
   mAccelerationRate: 15
   mDeccelerationRate: 15
   mVelocityPower: 0.9
   mSwingPower: 300
-  mRopeJumpPower: 3
+  mRopeJumpPower: 1.5
 --- !u!50 &1348433777730662585
 Rigidbody2D:
   serializedVersion: 4

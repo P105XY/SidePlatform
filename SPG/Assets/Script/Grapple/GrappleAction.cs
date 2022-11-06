@@ -40,6 +40,7 @@ public class GrappleAction : MonoBehaviour
     }
     void Start()
     {
+        gameObject.SetActive(false);
         mPlayerObject = PlayerManager.GetInstance.PlayerObject;
         mLastNode = transform.gameObject;
         mLineAnimCurve = new AnimationCurve();
