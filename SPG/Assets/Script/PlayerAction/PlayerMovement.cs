@@ -37,16 +37,18 @@ public class PlayerMovement : MonoBehaviour
     [field: SerializeField]
     private float mRopeJumpPower;
 
-    private float mLeftSin;
-    private float mLeftCos;
-    private float mRightSin;
-    private float mRightCos;
+    [field: SerializeField]
+    private float mDownRay;
 
     private PlayerAction mPlayerAction;
+    private RaycastHit2D mGroundHit;
+    private Vector2 mGroundCheckBoxSize;
+
     private void Start()
     {
         mCurrentRigid = GetComponent<Rigidbody2D>();
         mPlayerAction = GetComponent<PlayerAction>();
+        mGroundCheckBoxSize = new Vector2(5.0f, 0.1f);
     }
 
     private void FixedUpdate()
@@ -63,7 +65,20 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!mIsActive) return;
 
-        if (mLastLand > 0.0f && mLastJump > 0.0f && !isJumping)
+        mGroundHit = Physics2D.BoxCast(transform.position, mGroundCheckBoxSize, 0.0f, Vector2.down, mDownRay, LayerMask.GetMask(GlobalString.GlobalGround));
+
+        if (mGroundHit.collider != null)
+        {
+            if (mCurrentRigid.velocity.y <= 0.0f)
+            {
+                isJumping = false;
+                mIsJumpMaxHeight = true;
+            }
+            mLastLand = 0.1f;
+        }
+
+
+        if (mLastLand > 0.0f && mLastJump > 0.0f && !isJumping && mGroundHit.collider)
         {
             mCurrentRigid.AddForce(Vector2.up * mJumpPower, ForceMode2D.Impulse);
 
@@ -77,6 +92,13 @@ public class PlayerMovement : MonoBehaviour
             MaxJumpHeightAction();
             mIsJumpMaxHeight = false;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position + Vector3.down*mDownRay, mGroundCheckBoxSize);
+        Gizmos.DrawRay(transform.position, Vector2.down * mDownRay);
     }
 
 
@@ -154,13 +176,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if ((collision.gameObject.CompareTag(GlobalString.GlobalPlatform) || collision.gameObject.CompareTag(GlobalString.GlobalGround))
-            && mCurrentRigid.velocity.y <= 0.0f)
-        {
-            isJumping = false;
-            mIsJumpMaxHeight = true;
-        }
-        mLastLand = 0.1f;
+
     }
 
     private void OnCollisionExit2D(Collision2D collision)

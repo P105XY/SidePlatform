@@ -8,6 +8,10 @@ TagManager:
   - Platform
   - Enemy
   - Grapple
+  - Wall
+  - Celing
+  - Weapon
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -15,7 +19,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Ground
   - 
   - 
   - 
@@ -47,4 +51,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3578074279
+    locked: 0
+  - name: GrappleRope
+    uniqueID: 2205577249
     locked: 0

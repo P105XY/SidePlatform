@@ -21,7 +21,6 @@ public abstract class GunBase : MonoBehaviour, IShootGun
     private bool mIsShooting;
     public void InitializeGun(string name, float range, float damage, float rate)
     {
-        Debug.Log("Init GUN");
         mWeaponName = name;
         mWeaponRange = range;
         mWeaponDamage = damage;

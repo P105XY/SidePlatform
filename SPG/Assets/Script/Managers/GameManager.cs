@@ -9,7 +9,7 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-
+        Application.targetFrameRate = 144;
 
     }
 

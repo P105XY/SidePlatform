@@ -17,7 +17,6 @@ public class BulletBase : MonoBehaviour, IHit
 
     public void SetDirection(Vector2 d)
     {
-        Debug.Log("Set bullet dir");
         mMovementDirection = d;
     }
     private void Start()

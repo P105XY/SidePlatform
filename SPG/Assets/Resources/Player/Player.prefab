@@ -130,7 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isJumping: 0
   MoveDirection: 0
-  mMovementSpeepd: 20
+  mMovementSpeepd: 35
   mJumpPower: 50
   mStopJumpDownForce: 1
   mMaxJumpDownForce: 5
@@ -139,6 +139,7 @@ MonoBehaviour:
   mVelocityPower: 0.9
   mSwingPower: 300
   mRopeJumpPower: 1.5
+  mDownRay: 3
 --- !u!50 &1348433777730662585
 Rigidbody2D:
   serializedVersion: 4
