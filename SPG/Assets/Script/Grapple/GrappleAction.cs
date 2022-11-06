@@ -6,31 +6,45 @@ using UnityEngine;
 public class GrappleAction : MonoBehaviour
 {
     private Vector3 mDestination;
-    private float mMovementSpeed;
     private float mDistance = 1.0f;
     private float mGrappleToPlayerDist;
+    private float mReturnElapse;
+    [field: SerializeField]
+    private float mGrappleReturnTime;
+    [field: SerializeField]
+    private float mMovementSpeed;
+    [field: SerializeField]
+    private float mGrappleMaxLengh;
 
     private GameObject mPlayerObject;
     private GameObject mLastNode;
 
-    private bool mIsDone = false;
+    private bool mIsActiveGrapple;
+    private bool mIsHitted;
 
     [field: SerializeField]
     private GameObject mNodePrefab;
     [field: SerializeField]
     private AnimationCurve mLineAnimCurve;
+    private Rigidbody2D mGrappleRigid;
 
     private LineRenderer mLineRenderer;
 
-
-    // Start is called before the first frame update
+    public void SetDestination(Vector2 dest)
+    {
+        transform.position = mPlayerObject.transform.position;
+        mDestination = dest;
+        mIsHitted = false;
+        mIsActiveGrapple = true;
+        mReturnElapse = 0.0f;
+    }
     void Start()
     {
-        mMovementSpeed = 2.0f;
         mPlayerObject = PlayerManager.GetInstance.PlayerObject;
         mLastNode = transform.gameObject;
         mLineAnimCurve = new AnimationCurve();
         mLineRenderer = GetComponent<LineRenderer>();
+        mGrappleRigid = GetComponent<Rigidbody2D>();
 
         mLineRenderer.positionCount = 2;
         mLineRenderer.startWidth = mLineRenderer.endWidth = 0.08f;
@@ -39,24 +53,31 @@ public class GrappleAction : MonoBehaviour
         mLineRenderer.useWorldSpace = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         DrawGrappleRope();
         mGrappleToPlayerDist = Vector2.Distance(mPlayerObject.transform.position, transform.position);
 
-        if (!mIsDone)
+        if (mIsActiveGrapple && !mIsHitted)
         {
-            if (mGrappleToPlayerDist >= 50.0f)
-            {
-                mIsDone = true;
-            }
+            mGrappleRigid.MovePosition(transform.position + mDestination * mMovementSpeed * Time.deltaTime);
 
-            transform.position = Vector2.MoveTowards(mPlayerObject.transform.position, mDestination.normalized * 50.0f, mMovementSpeed);
+            if (mGrappleToPlayerDist >= mGrappleMaxLengh && !mIsHitted)
+                mIsActiveGrapple = false;
         }
-        else
+
+        if (mIsActiveGrapple && mIsHitted)
         {
-            mLastNode.GetComponent<DistanceJoint2D>().connectedBody = mPlayerObject.GetComponent<Rigidbody2D>();
+            GetComponent<DistanceJoint2D>().connectedBody = mPlayerObject.GetComponent<Rigidbody2D>();
+        }
+
+
+        if (!mIsActiveGrapple && !mIsHitted && mReturnElapse < mGrappleReturnTime)
+        {
+            mReturnElapse += Time.deltaTime;
+            mGrappleRigid.transform.position = Vector2.Lerp(transform.position, mPlayerObject.transform.position, mReturnElapse / mGrappleReturnTime);
+
+            if (mGrappleToPlayerDist <= Mathf.Epsilon) PlayerManager.GetInstance.PlayerAction.StopGrappleAction();
         }
     }
 
@@ -79,16 +100,17 @@ public class GrappleAction : MonoBehaviour
         mLastNode = go;
     }
 
-    public void SetDestination(Vector2 dest) => mDestination = dest;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag(GlobalString.GlobalGround) ||
+        if ((collision.gameObject.CompareTag(GlobalString.GlobalGround) ||
             collision.gameObject.CompareTag(GlobalString.GlobalPlatform) ||
             collision.gameObject.CompareTag(GlobalString.GlobalWall) ||
-            collision.gameObject.CompareTag(GlobalString.GlobalCeling))
+            collision.gameObject.CompareTag(GlobalString.GlobalCeling) ||
+            collision.gameObject.CompareTag(GlobalString.GlobalObstacle)) &&
+            mIsActiveGrapple)
         {
-            mIsDone = true;
+            mIsHitted = true;
         }
     }
 }

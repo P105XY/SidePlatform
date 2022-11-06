@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -6,38 +7,40 @@ using UnityEngine.Rendering.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private bool        mIsActive;
-    private bool        mIsJumpMaxHeight;
-    private float       mLastLand;
-    private float       mLastJump;
+    private bool mIsActive;
+    private bool mIsJumpMaxHeight;
+    private float mLastLand;
+    private float mLastJump;
     private Rigidbody2D mCurrentRigid;
 
     [field: HideInInspector]
-    public bool         isJumping;
+    public bool isJumping;
     [field: HideInInspector]
-    public float        MoveDirection;
+    public float MoveDirection;
 
     [field: SerializeField]
-    private float       mMovementSpeepd;
+    private float mMovementSpeepd;
     [field: SerializeField]
-    private float       mJumpPower;
+    private float mJumpPower;
     [field: SerializeField]
-    private float       mStopJumpDownForce;
+    private float mStopJumpDownForce;
     [field: SerializeField]
-    private float       mMaxJumpDownForce;
+    private float mMaxJumpDownForce;
     [field: SerializeField]
-    private float       mAccelerationRate;
+    private float mAccelerationRate;
     [field: SerializeField]
-    private float       mDeccelerationRate;
+    private float mDeccelerationRate;
     [field: SerializeField]
-    private float       mVelocityPower;
+    private float mVelocityPower;
     [field: SerializeField]
-    private float       mSwingPower;
+    private float mSwingPower;
+    [field: SerializeField]
+    private float mRopeJumpPower;
 
-    private float       mLeftSin;
-    private float       mLeftCos;
-    private float       mRightSin;
-    private float       mRightCos;
+    private float mLeftSin;
+    private float mLeftCos;
+    private float mRightSin;
+    private float mRightCos;
 
     private PlayerAction mPlayerAction;
     private void Start()
@@ -63,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         if (mLastLand > 0.0f && mLastJump > 0.0f && !isJumping)
         {
             mCurrentRigid.AddForce(Vector2.up * mJumpPower, ForceMode2D.Impulse);
+
             mLastLand = 0.0f;
             mLastJump = 0.0f;
             isJumping = true;
@@ -120,8 +124,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (mPlayerAction.IsGrappling)
         {
-
             mPlayerAction.StopGrappleAction();
+            mCurrentRigid.AddForce(new Vector2(mCurrentRigid.velocity.x, Mathf.Abs(mCurrentRigid.velocity.y)) * mRopeJumpPower, ForceMode2D.Impulse);
         }
 
         mLastJump = 0.1f;

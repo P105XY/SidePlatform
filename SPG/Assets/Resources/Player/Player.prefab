@@ -103,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Hook: {fileID: 144134501890706372, guid: ccf2ef44b7f32e4408a1b1dfc00c9322, type: 3}
   IsGrappling: 0
+  PlayerObject: {fileID: 0}
 --- !u!114 &7330155021357660497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +138,7 @@ MonoBehaviour:
   mDeccelerationRate: 15
   mVelocityPower: 0.9
   mSwingPower: 300
+  mRopeJumpPower: 3
 --- !u!50 &1348433777730662585
 Rigidbody2D:
   serializedVersion: 4

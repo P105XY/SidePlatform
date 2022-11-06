@@ -10,6 +10,26 @@ public interface IHit
 
 public class BulletBase : MonoBehaviour, IHit
 {
+    [field: SerializeField]
+    protected float mMoveSpeed;
+    protected Vector2 mMovementDirection = new();
+    protected Rigidbody2D mCurRigid = new();
+
+    public void SetDirection(Vector2 d)
+    {
+        Debug.Log("Set bullet dir");
+        mMovementDirection = d;
+    }
+    private void Start()
+    {
+        mCurRigid = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        mCurRigid.MovePosition((Vector2)transform.position + mMovementDirection * mMoveSpeed * Time.deltaTime);
+    }
+
     void IHit.HitEnemy()
     {
         throw new System.NotImplementedException();

@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Bson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ public class PlayerInput : MonoBehaviour
     private Action        mPlayerStopMovement;
     private Action        mSwapPrevWeapon;
     private Action        mSwapNextWeapon;
+    private Action        mAfterBunner;
+    private Action        mStopAfterBunner;
 
     public bool mIsActiveInput { get; private set; }
 
@@ -36,6 +39,8 @@ public class PlayerInput : MonoBehaviour
         mPlayerStopGrapple  += PlayerManager.GetInstance.PlayerAction.StopGrappleAction;
         mSwapNextWeapon     += PlayerManager.GetInstance.PlayerAction.SwapNextWeapon;
         mSwapPrevWeapon     += PlayerManager.GetInstance.PlayerAction.SwapPrevWeapon;
+        mAfterBunner        += PlayerManager.GetInstance.PlayerAction.AfterBunner;
+        mStopAfterBunner    += PlayerManager.GetInstance.PlayerAction.StopAtferBunner;
         mIsActiveInput      = true;
     }
 
@@ -47,7 +52,8 @@ public class PlayerInput : MonoBehaviour
             { KeyCode.Mouse0,   Shoot },
             { KeyCode.Mouse1,   Grapple },
             { KeyCode.Q,        SwapPrevWeapon },
-            { KeyCode.E,        SwapNextWeapon }
+            { KeyCode.E,        SwapNextWeapon },
+            {KeyCode.LeftShift, AfterBunner }
         };
     }
 
@@ -58,7 +64,8 @@ public class PlayerInput : MonoBehaviour
             { KeyCode.Space,    StopJump },
             { KeyCode.Mouse0,   StopShoot },
             { KeyCode.A,        PlayerStopMove },
-            { KeyCode.D,        PlayerStopMove }
+            { KeyCode.D,        PlayerStopMove },
+            { KeyCode.LeftShift, StopAfterBunner }
         };
     }
 
@@ -90,5 +97,7 @@ public class PlayerInput : MonoBehaviour
     private void PlayerStopMove()           => mPlayerStopMovement();
     private void SwapPrevWeapon()           => mSwapPrevWeapon();
     private void SwapNextWeapon()           => mSwapNextWeapon();
+    private void AfterBunner()              => mAfterBunner();
+    private void StopAfterBunner()          => mStopAfterBunner();
     public void SetActive(bool isTrueFalse) => this.mIsActiveInput = isTrueFalse;
 }
